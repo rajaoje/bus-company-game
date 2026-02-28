@@ -1,0 +1,57 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: bus-game-app
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_USERNAME=busgame
+      - DB_PASSWORD=busgame_secret
+    depends_on:
+      postgres:
+        condition: service_healthy # Attend que PostgreSQL soit prêt
+    networks:
+      - bus-network
+  frontend:
+    build: ../bus-game-frontend
+    container_name: bus-game-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
+    networks:
+      - bus-network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: bus-game-postgres
+    ports:
+      # Format "port_hote:port_conteneur"
+      # Cela signifie : "quand quelqu'un frappe au port 5433 de MA machine,
+      # redirige vers le port 5432 du conteneur PostgreSQL".
+      # On utilise 5433 côté hôte pour éviter les conflits si tu as
+      # déjà un PostgreSQL installé localement sur le port 5432.
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: busgame
+      POSTGRES_USER: busgame
+      POSTGRES_PASSWORD: busgame_secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persiste les données entre redémarrages
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U busgame -d busgame"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bus-network
+
+volumes:
+  postgres_data:
+
+networks:
+  bus-network:
+    driver: bridge
