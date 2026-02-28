@@ -36,6 +36,9 @@ public class ScheduleJpaEntity {
     @Column(nullable = false)
     private ScheduleStatus status;
 
+    @Column(name = "trip_id")
+    private UUID tripId;
+
     protected ScheduleJpaEntity() {}
 
     public ScheduleJpaEntity(UUID id, UUID busId, UUID driverId, UUID routeId,

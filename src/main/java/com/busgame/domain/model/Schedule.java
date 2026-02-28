@@ -22,6 +22,8 @@ public class Schedule {
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
     private ScheduleStatus status;
+    private TripId tripId;
+
 
     private Schedule(ScheduleId id, BusId busId, DriverId driverId, RouteId routeId,
                      LocalDateTime startTime, LocalDateTime endTime) {
