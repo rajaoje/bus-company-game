@@ -10,6 +10,7 @@ public record ScheduleResponse(
         UUID busId,
         UUID driverId,
         UUID routeId,
+        UUID tripId,
         LocalDateTime startTime,
         LocalDateTime endTime,
         ScheduleStatus status,

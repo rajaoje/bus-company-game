@@ -5,19 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// infrastructure/web/PlanScheduleRequest.java
 public record PlanScheduleRequest(
-        @NotNull(message = "L'identifiant du bus est obligatoire")
-        UUID busId,
-
-        @NotNull(message = "L'identifiant du conducteur est obligatoire")
-        UUID driverId,
-
-        @NotNull(message = "L'identifiant du parcours est obligatoire")
-        UUID routeId,
-
-        @NotNull(message = "L'heure de debut est obligatoire")
-        LocalDateTime startTime,
-
-        @NotNull(message = "L'heure de fin est obligatoire")
-        LocalDateTime endTime
+        @NotNull UUID busId,
+        @NotNull UUID driverId,
+        @NotNull UUID routeId,
+        @NotNull UUID tripId,
+        @NotNull LocalDateTime startTime,
+        @NotNull LocalDateTime endTime
 ) {}

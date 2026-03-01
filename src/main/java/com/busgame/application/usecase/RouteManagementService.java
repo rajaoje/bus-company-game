@@ -2,10 +2,8 @@
 package com.busgame.application.usecase;
 
 import com.busgame.domain.exception.RouteNotFoundException;
-import com.busgame.domain.model.Distance;
 import com.busgame.domain.model.Route;
 import com.busgame.domain.model.RouteId;
-import com.busgame.domain.model.StopId;
 import com.busgame.domain.port.in.RouteManagementUseCase;
 import com.busgame.domain.port.out.RouteRepository;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Apres Niveau 2 GTFS : RouteManagementService est allege.
+ * - Plus de addStop() / removeStop() — ces operations passent
+ *   desormais par TripManagementService via addStopTime().
+ * - Route ne gere plus que son identite : nom, shortName, type.
+ */
 @Service
 @Transactional
 public class RouteManagementService implements RouteManagementUseCase {
@@ -24,7 +28,8 @@ public class RouteManagementService implements RouteManagementUseCase {
     }
 
     @Override
-    public Route createRoute(String name, String description, String shortName) {
+    public Route createRoute(String name, String description,
+                             String shortName) {
         Route route = Route.create(name, description, shortName);
         return routeRepository.save(route);
     }
@@ -43,19 +48,10 @@ public class RouteManagementService implements RouteManagementUseCase {
     }
 
     @Override
-    public Route addStop(RouteId routeId, String name,
-                         Distance distanceFromPrevious,
-                         double latitude, double longitude) {
-        Route route = routeRepository.findById(routeId)
-                .orElseThrow(() -> new RouteNotFoundException(routeId));
-        route.addStop(name, distanceFromPrevious, latitude, longitude);
-        return routeRepository.save(route);
-    }
-
-    @Override
-    public Route removeStop(RouteId routeId, StopId stopId) {
-        Route route = getRoute(routeId);
-        route.removeStop(stopId);
-        return routeRepository.save(route);
+    public void deleteRoute(RouteId id) {
+        // Verifier que la route existe avant de supprimer
+        routeRepository.findById(id)
+                .orElseThrow(() -> new RouteNotFoundException(id));
+        routeRepository.delete(id);
     }
 }

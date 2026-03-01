@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// infrastructure/persistence/ScheduleJpaEntity.java
 @Entity
 @Table(name = "schedules")
 public class ScheduleJpaEntity {
@@ -14,9 +15,6 @@ public class ScheduleJpaEntity {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    // On stocke uniquement les IDs des agregats externes —
-    // exactement comme dans le domaine, pas de @ManyToOne vers BusJpaEntity.
-    // Cela evite les jointures automatiques et les problemes de chargement paresseux.
     @Column(name = "bus_id", nullable = false)
     private UUID busId;
 
@@ -25,6 +23,9 @@ public class ScheduleJpaEntity {
 
     @Column(name = "route_id", nullable = false)
     private UUID routeId;
+
+    @Column(name = "trip_id")   // nullable — migration progressive
+    private UUID tripId;
 
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
@@ -36,28 +37,28 @@ public class ScheduleJpaEntity {
     @Column(nullable = false)
     private ScheduleStatus status;
 
-    @Column(name = "trip_id")
-    private UUID tripId;
-
     protected ScheduleJpaEntity() {}
 
-    public ScheduleJpaEntity(UUID id, UUID busId, UUID driverId, UUID routeId,
+    public ScheduleJpaEntity(UUID id, UUID busId, UUID driverId,
+                             UUID routeId, UUID tripId,
                              LocalDateTime startTime, LocalDateTime endTime,
                              ScheduleStatus status) {
-        this.id = id;
-        this.busId = busId;
-        this.driverId = driverId;
-        this.routeId = routeId;
+        this.id        = id;
+        this.busId     = busId;
+        this.driverId  = driverId;
+        this.routeId   = routeId;
+        this.tripId    = tripId;
         this.startTime = startTime;
-        this.endTime = endTime;
-        this.status = status;
+        this.endTime   = endTime;
+        this.status    = status;
     }
 
-    public UUID getId() { return id; }
-    public UUID getBusId() { return busId; }
-    public UUID getDriverId() { return driverId; }
-    public UUID getRouteId() { return routeId; }
-    public LocalDateTime getStartTime() { return startTime; }
-    public LocalDateTime getEndTime() { return endTime; }
-    public ScheduleStatus getStatus() { return status; }
+    public UUID getId()                    { return id; }
+    public UUID getBusId()                 { return busId; }
+    public UUID getDriverId()              { return driverId; }
+    public UUID getRouteId()               { return routeId; }
+    public UUID getTripId()                { return tripId; }
+    public LocalDateTime getStartTime()    { return startTime; }
+    public LocalDateTime getEndTime()      { return endTime; }
+    public ScheduleStatus getStatus()      { return status; }
 }

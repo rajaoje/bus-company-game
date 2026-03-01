@@ -48,7 +48,10 @@ public interface SpringDataScheduleRepository extends JpaRepository<ScheduleJpaE
             @Param("endTime") LocalDateTime endTime
     );
 
-    // Horaires PLANNED dont l'heure de debut est passee
+// Méthodes à ajouter dans SpringDataScheduleRepository.java
+
+    List<ScheduleJpaEntity> findByStatus(ScheduleStatus status);
+
     @Query("""
     SELECT s FROM ScheduleJpaEntity s
     WHERE s.status = 'PLANNED'
@@ -57,7 +60,6 @@ public interface SpringDataScheduleRepository extends JpaRepository<ScheduleJpaE
     List<ScheduleJpaEntity> findSchedulesToStart(
             @Param("gameTime") LocalDateTime gameTime);
 
-    // Horaires IN_PROGRESS dont l'heure de fin est passee
     @Query("""
     SELECT s FROM ScheduleJpaEntity s
     WHERE s.status = 'IN_PROGRESS'
@@ -65,7 +67,4 @@ public interface SpringDataScheduleRepository extends JpaRepository<ScheduleJpaE
 """)
     List<ScheduleJpaEntity> findSchedulesToComplete(
             @Param("gameTime") LocalDateTime gameTime);
-
-    // Tous les horaires avec un statut donne
-    List<ScheduleJpaEntity> findByStatus(ScheduleStatus status);
 }

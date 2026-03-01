@@ -62,4 +62,20 @@ public class GlobalExceptionHandler {
         problem.setTitle("Numero de bus duplique");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
     }
+
+    @ExceptionHandler(StopNotFoundException.class)
+    public ProblemDetail handleStopNotFound(StopNotFoundException ex) {
+        ProblemDetail problem = ProblemDetail
+                .forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problem.setTitle("Arret Introuvable");
+        return problem;
+    }
+
+    @ExceptionHandler(TripNotFoundException.class)
+    public ProblemDetail handleTripNotFound(TripNotFoundException ex) {
+        ProblemDetail problem = ProblemDetail
+                .forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problem.setTitle("Trip Introuvable");
+        return problem;
+    }
 }

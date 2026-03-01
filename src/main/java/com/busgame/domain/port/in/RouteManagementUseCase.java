@@ -1,19 +1,20 @@
 // domain/port/in/RouteManagementUseCase.java
 package com.busgame.domain.port.in;
 
-import com.busgame.domain.model.Distance;
 import com.busgame.domain.model.Route;
 import com.busgame.domain.model.RouteId;
-import com.busgame.domain.model.StopId;
 
 import java.util.List;
 
+/**
+ * Apres Niveau 2 GTFS : le use case Route est allege.
+ * addStop() et removeStop() ont ete retires — ils sont
+ * desormais dans TripManagementUseCase sous addStopTime()
+ * et removeStopTime().
+ */
 public interface RouteManagementUseCase {
+    Route createRoute(String name, String description, String shortName);
     Route getRoute(RouteId id);
     List<Route> getAllRoutes();
-    Route removeStop(RouteId routeId, StopId stopId);
-    Route createRoute(String name, String description, String shortName);
-    Route addStop(RouteId routeId, String name,
-                  Distance distanceFromPrevious,
-                  double latitude, double longitude);
+    void deleteRoute(RouteId id);
 }

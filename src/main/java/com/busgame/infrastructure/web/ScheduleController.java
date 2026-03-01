@@ -30,6 +30,7 @@ public class ScheduleController {
                 new BusId(request.busId()),
                 new DriverId(request.driverId()),
                 new RouteId(request.routeId()),
+                new TripId(request.tripId()),
                 request.startTime(),
                 request.endTime()
         );
