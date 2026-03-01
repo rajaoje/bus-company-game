@@ -7,7 +7,10 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface TripManagementUseCase {
-    Trip createTrip(RouteId routeId, DirectionId directionId, String headsign);
+    // Dans TripManagementUseCase.java — signature mise à jour
+
+    Trip createTrip(RouteId routeId, ServiceId serviceId,
+                    DirectionId directionId, String headsign);
     Trip getTrip(TripId id);
     List<Trip> getTripsByRoute(RouteId routeId);
     Trip addStopTime(TripId tripId, StopId stopId,

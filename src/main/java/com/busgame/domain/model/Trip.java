@@ -25,36 +25,41 @@ public class Trip {
     private DirectionId directionId;  // GTFS : direction_id
     private String headsign;          // GTFS : trip_headsign — ex: "Gare Nord"
     private List<StopTime> stopTimes;
+    private final ServiceId serviceId;
 
     private static final double AVERAGE_SPEED_KMH = 25.0;
 
-    private Trip(TripId id, RouteId routeId,
+    private Trip(TripId id, RouteId routeId, ServiceId serviceId,
                  DirectionId directionId, String headsign) {
         this.id          = id;
         this.routeId     = routeId;
+        this.serviceId   = serviceId;
         this.directionId = directionId;
         this.headsign    = headsign;
         this.stopTimes   = new ArrayList<>();
     }
 
-    public static Trip create(RouteId routeId,
-                              DirectionId directionId,
-                              String headsign) {
+    public static Trip create(RouteId routeId, ServiceId serviceId,
+                              DirectionId directionId, String headsign) {
         if (routeId == null)
             throw new IllegalArgumentException("RouteId est obligatoire.");
+        if (serviceId == null)
+            throw new IllegalArgumentException("ServiceId est obligatoire.");
+        if (directionId == null)
+            throw new IllegalArgumentException("DirectionId est obligatoire.");
         if (headsign == null || headsign.isBlank())
             throw new IllegalArgumentException("Le headsign est obligatoire.");
 
         return new Trip(new TripId(UUID.randomUUID()),
-                routeId, directionId, headsign);
+                routeId, serviceId, directionId, headsign);
     }
 
     public static Trip reconstitute(TripId id, RouteId routeId,
-                                    DirectionId directionId,
-                                    String headsign,
+                                    ServiceId serviceId,
+                                    DirectionId directionId, String headsign,
                                     List<StopTime> stopTimes) {
-        Trip trip = new Trip(id, routeId, directionId, headsign);
-        trip.stopTimes = new ArrayList<>(stopTimes);
+        Trip trip = new Trip(id, routeId, serviceId, directionId, headsign);
+        trip.stopTimes.addAll(stopTimes);
         return trip;
     }
 
@@ -145,6 +150,7 @@ public class Trip {
     public RouteId getRouteId()     { return routeId; }
     public DirectionId getDirectionId() { return directionId; }
     public String getHeadsign()     { return headsign; }
+    public ServiceId getServiceId() { return serviceId; }
     public List<StopTime> getStopTimes() {
         return Collections.unmodifiableList(
                 stopTimes.stream()

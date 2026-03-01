@@ -9,6 +9,7 @@ import java.util.UUID;
 // infrastructure/web/CreateTripRequest.java
 public record CreateTripRequest(
         @NotNull UUID routeId,
+        @NotNull UUID serviceId,    // ← ajout
         @NotNull DirectionId directionId,
         @NotBlank String headsign
 ) {}

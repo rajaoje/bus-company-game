@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Comparator;
 import java.util.List;
 
+// infrastructure/persistence/TripMapper.java
 @Component
 public class TripMapper {
 
@@ -14,6 +15,7 @@ public class TripMapper {
         TripJpaEntity entity = new TripJpaEntity(
                 trip.getId().value(),
                 trip.getRouteId().value(),
+                trip.getServiceId().value(),   // ← ajout Niveau 3
                 trip.getDirectionId(),
                 trip.getHeadsign()
         );
@@ -53,6 +55,7 @@ public class TripMapper {
         return Trip.reconstitute(
                 new TripId(entity.getId()),
                 new RouteId(entity.getRouteId()),
+                new ServiceId(entity.getServiceId()),  // ← ajout Niveau 3
                 entity.getDirectionId(),
                 entity.getHeadsign(),
                 stopTimes

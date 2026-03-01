@@ -27,13 +27,13 @@ public class TripController {
     @PostMapping
     public ResponseEntity<TripResponse> createTrip(
             @Valid @RequestBody CreateTripRequest request) {
+        Trip trip = tripUseCase.createTrip(
+                new RouteId(request.routeId()),
+                new ServiceId(request.serviceId()),  // ← ajout
+                request.directionId(),
+                request.headsign());
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(responseMapper.toResponse(
-                        tripUseCase.createTrip(
-                                new RouteId(request.routeId()),
-                                request.directionId(),
-                                request.headsign()
-                        )));
+                .body(responseMapper.toResponse(trip));
     }
 
     @GetMapping("/route/{routeId}")

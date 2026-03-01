@@ -31,12 +31,17 @@ public class TripJpaEntity {
     @JoinColumn(name = "trip_id")
     private List<StopTimeJpaEntity> stopTimes = new ArrayList<>();
 
+    @Column(name = "service_id", nullable = false)
+    private UUID serviceId;
+
     protected TripJpaEntity() {}
 
-    public TripJpaEntity(UUID id, UUID routeId,
+    // Constructeur mis à jour
+    public TripJpaEntity(UUID id, UUID routeId, UUID serviceId,
                          DirectionId directionId, String headsign) {
         this.id          = id;
         this.routeId     = routeId;
+        this.serviceId   = serviceId;   // ← ajout
         this.directionId = directionId;
         this.headsign    = headsign;
     }
@@ -51,4 +56,6 @@ public class TripJpaEntity {
     public DirectionId getDirectionId() { return directionId; }
     public String getHeadsign()        { return headsign; }
     public List<StopTimeJpaEntity> getStopTimes() { return stopTimes; }
+    public UUID getServiceId() { return serviceId; }
+
 }
